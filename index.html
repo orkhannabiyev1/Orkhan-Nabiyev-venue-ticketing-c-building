@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C Building Auditorium | Ticket Selection</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <h1>C Building Auditorium</h1>
+        <p>Click a seat to inspect it, then add it to your cart.</p>
+
+    </header>
+    <main class="layout">
+        <section class="map-section" aria-label="venue map">
+
+            <div class="map-controls">
+                <button type="button" id="zoom-in">Zoom In +</button>
+                <button type="button" id="zoom-out">Zoom Out -</button>
+                <button type="button" id="move-up">↑ Move Up</button>
+                <button type="button" id="move-down">↓ Move Down</button>
+                <button type="button" id="move-left">← Move Left</button>
+                <button type="button" id="move-right">→ Move Right</button>
+                <button type="button" id="reset-view">Reset / Center View</button>
+    
+
+
+            </div>
+            <div class="map-viewport" id="map-viewport">
+                <div class="map-content" id="map-content">
+        
+                </div>
+            </div>
+
+            <ul class="legend" id="legend">
+
+            </ul>
+        </section>
+        <aside class="sidebar">
+
+            <section class="panel" id="seat-details" aria-live="polite">
+                <h2>Seat Details</h2>
+                <p id="seat-details-empty">Click a seat to see its details.</p>
+            </section>
+
+            <section class="panel" id="cart">
+                <h2>Your Cart</h2>
+                <p id="cart-empty">Your cart is empty.</p>
+                <ul id="cart-list"></ul>
+                <p class="cart-total">Total: <strong id="cart-total">0</strong> ₼</p>
+            </section>
+
+        </aside>
+
+
+
+
+
+
+
+
+
+        
+    </main>
+    <script src="js/venue-data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
