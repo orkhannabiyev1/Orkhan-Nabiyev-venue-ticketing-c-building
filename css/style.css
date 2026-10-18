@@ -143,3 +143,38 @@ body {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+.stage {
+  position: absolute;
+  left: 470px;
+  top: 10px;
+  width: 360px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d9b98a;
+  color: #5a4520;
+  font-weight: bold;
+  letter-spacing: 2px;
+  border-radius: 0 0 180px 180px / 0 0 60px 60px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.legend-swatch.unavailable {
+  background: #b4b2a9;
+  opacity: 0.45;
+}

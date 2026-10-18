@@ -75,3 +75,37 @@ function renderSeats() {
 }
 
 renderSeats();
+
+const legend = document.getElementById("legend");
+
+function renderStage() {
+  const stage = document.createElement("div");
+  stage.className = "stage";
+  stage.textContent = "Stage";
+  mapContent.appendChild(stage);
+}
+
+function addLegendItem(text, color, extraClass) {
+  const item = document.createElement("li");
+  const swatch = document.createElement("span");
+  swatch.className = "legend-swatch" + (extraClass ? " " + extraClass : "");
+  if (color) {
+    swatch.style.backgroundColor = color;
+  }
+  item.appendChild(swatch);
+  item.appendChild(document.createTextNode(text));
+  legend.appendChild(item);
+}
+
+function renderLegend() {
+  Object.values(VENUE.categories).forEach(function (category) {
+    addLegendItem(
+      category.label + " (" + category.price + " " + VENUE.currency + ")",
+      category.color
+    );
+  });
+  addLegendItem("Unavailable", null, "unavailable");
+}
+
+renderStage();
+renderLegend();
