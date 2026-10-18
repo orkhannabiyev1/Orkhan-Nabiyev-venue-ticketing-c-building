@@ -109,3 +109,33 @@ function renderLegend() {
 
 renderStage();
 renderLegend();
+
+
+
+function addRowLabel(text, seat, offsetX) {
+  const label = document.createElement("span");
+  label.className = "row-label";
+  label.textContent = text;
+  label.style.left = (seat.x + offsetX) + "px";
+  label.style.top = seat.y + "px";
+  mapContent.appendChild(label);
+}
+
+function renderRowLabels() {
+  const rows = {};
+
+  SEATS.forEach(function (seat) {
+    if (!rows[seat.row]) {
+      rows[seat.row] = [];
+    }
+    rows[seat.row].push(seat);
+  });
+
+  Object.keys(rows).forEach(function (rowLabel) {
+    const seats = rows[rowLabel];
+    addRowLabel(rowLabel, seats[0], -26);
+    addRowLabel(rowLabel, seats[seats.length - 1], 26);
+  });
+}
+
+renderRowLabels();
