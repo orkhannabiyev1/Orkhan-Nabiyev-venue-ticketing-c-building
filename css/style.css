@@ -35,7 +35,7 @@ body {
 }
 .layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: minmax(0, 1fr) 320px;
   gap: 16px;
   padding: 16px;
 }
@@ -68,9 +68,9 @@ body {
 .map-content {
   position: relative;
   width: 1300px;
-  height: 850px;
+  height: 600px;
   transform-origin: top left;
-  transform: scale(0.6);
+  transform: scale(0.7);
 }
 
 .legend {
@@ -138,9 +138,8 @@ body {
 
 
 
-
 @media (max-width: 900px) {
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
