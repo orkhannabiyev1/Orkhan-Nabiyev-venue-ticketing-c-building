@@ -65,9 +65,12 @@ body {
 
   border-radius: 8px;
 }
-
 .map-content {
-  transform-origin: center center;
+  position: relative;
+  width: 1300px;
+  height: 850px;
+  transform-origin: top left;
+  transform: scale(0.6);
 }
 
 .legend {
@@ -115,7 +118,23 @@ body {
 
 
 
+.seat {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: var(--seat-color);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
 
+.seat.unavailable {
+  background: #b4b2a9;
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 
 
 
