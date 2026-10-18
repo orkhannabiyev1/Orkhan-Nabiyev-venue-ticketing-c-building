@@ -13,41 +13,43 @@ const VENUE = {
     {
       id: "premium",
       category: "premium",
-      startAngle: -68,
-      angleStep: 4.4,
-      aisleGap: 11,
+      startAngle: -34,
+      angleStep: 2.2,
+      aisleGap: 6.5,
       blockSeats: [6, 12, 8],
       rows: [
-        { label: "A", radius: 340 },
-        { label: "B", radius: 376 },
-        { label: "C", radius: 412 }
+        { label: "A", radius: 700 },
+        { label: "B", radius: 734 },
+        { label: "C", radius: 768 }
       ]
     },
     {
       id: "standard",
       category: "standard",
-      startAngle: -68,
-      angleStep: 4.4,
-      aisleGap: 11,
+      
+      
+      startAngle: -34,
+      angleStep: 2.2,
+      aisleGap: 6.5,
       blockSeats: [6, 12, 8],
       rows: [
-        { label: "D", radius: 470 },
-        { label: "E", radius: 506 },
-        { label: "F", radius: 542 },
-        { label: "G", radius: 578 },
-        { label: "H", radius: 614 }
+        { label: "D", radius: 830 },
+        { label: "E", radius: 864 },
+        { label: "F", radius: 898 },
+        { label: "G", radius: 932 },
+        { label: "H", radius: 966 }
       ]
     },
     {
       id: "balcony",
       category: "balcony",
-      startAngle: -31.2,
-      angleStep: 2.6,
+      startAngle: -23,
+      angleStep: 2.0,
       aisleGap: 0,
       blockSeats: [24],
       rows: [
-        { label: "I", radius: 700 },
-        { label: "J", radius: 736 }
+        { label: "I", radius: 1040 },
+        { label: "J", radius: 1076 }
       ]
     }
   ],

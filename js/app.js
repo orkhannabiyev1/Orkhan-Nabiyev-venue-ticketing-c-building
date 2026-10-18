@@ -1,4 +1,4 @@
-const MAP_CENTER = { x: 650, y: 40 };
+const MAP_CENTER = { x: 650, y: -560 };
 
 function toRadians(degrees) {
   return degrees * Math.PI / 180;
