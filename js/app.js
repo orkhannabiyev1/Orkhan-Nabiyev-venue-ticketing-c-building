@@ -52,3 +52,26 @@ function buildSeats() {
 }
 
 const SEATS = buildSeats();
+
+
+const mapContent = document.getElementById("map-content");
+
+function renderSeats() {
+  SEATS.forEach(function (seat) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "seat " + seat.status;
+    button.dataset.seatId = seat.id;
+    button.style.left = seat.x + "px";
+    button.style.top = seat.y + "px";
+    button.style.setProperty("--seat-color", seat.color);
+    button.setAttribute(
+      "aria-label",
+      "Row " + seat.row + ", seat " + seat.number + ", " +
+      seat.zoneLabel + ", " + seat.price + " " + VENUE.currency + ", " + seat.status
+    );
+    mapContent.appendChild(button);
+  });
+}
+
+renderSeats();
