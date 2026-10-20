@@ -139,3 +139,51 @@ function renderRowLabels() {
 }
 
 renderRowLabels();
+
+
+
+const seatInfo = document.getElementById("seat-info");
+const seatInfoEmpty = document.getElementById("seat-details-empty");
+
+let inspectedSeatId = null;
+
+function findSeat(seatId) {
+  return SEATS.find(function (seat) {
+    return seat.id === seatId;
+  });
+}
+
+function getSeatButton(seatId) {
+  return mapContent.querySelector('[data-seat-id="' + seatId + '"]');
+}
+
+function showSeatDetails(seat) {
+  document.getElementById("info-seat").textContent = seat.id;
+  document.getElementById("info-zone").textContent = seat.zoneLabel;
+  document.getElementById("info-row").textContent = seat.row;
+  document.getElementById("info-number").textContent = seat.number;
+  document.getElementById("info-price").textContent = seat.price + " " + VENUE.currency;
+  document.getElementById("info-status").textContent =
+    seat.status === "unavailable" ? "Unavailable" : "Available";
+
+  seatInfoEmpty.hidden = true;
+  seatInfo.hidden = false;
+}
+
+function inspectSeat(seatId) {
+  if (inspectedSeatId) {
+    getSeatButton(inspectedSeatId).classList.remove("inspected");
+  }
+
+  inspectedSeatId = seatId;
+  getSeatButton(seatId).classList.add("inspected");
+  showSeatDetails(findSeat(seatId));
+}
+
+mapContent.addEventListener("click", function (event) {
+  const button = event.target.closest(".seat");
+  if (!button) {
+    return;
+  }
+  inspectSeat(button.dataset.seatId);
+});
