@@ -154,7 +154,32 @@ body {
 
 
 
+.seat-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+  margin: 0;
+}
 
+.seat-info[hidden] {
+  display: none;
+}
+
+.seat-info dt {
+  color: #6b7280;
+}
+
+.seat-info dd {
+  margin: 0;
+  font-weight: bold;
+}
+
+.seat.inspected {
+  outline: 3px solid #1f2937;
+  outline-offset: 2px;
+  transform: translate(-50%, -50%) scale(1.25);
+  z-index: 2;
+}
 
 
 
