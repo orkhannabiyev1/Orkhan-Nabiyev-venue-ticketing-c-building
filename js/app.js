@@ -171,14 +171,17 @@ function showSeatDetails(seat) {
   seatInfoEmpty.hidden = true;
   seatInfo.hidden = false;
 }
-
 function inspectSeat(seatId) {
   if (inspectedSeatId) {
-    getSeatButton(inspectedSeatId).classList.remove("inspected");
+    const previous = getSeatButton(inspectedSeatId);
+    previous.classList.remove("inspected");
+    previous.removeAttribute("aria-current");
   }
 
   inspectedSeatId = seatId;
-  getSeatButton(seatId).classList.add("inspected");
+  const current = getSeatButton(seatId);
+  current.classList.add("inspected");
+  current.setAttribute("aria-current", "true");
   showSeatDetails(findSeat(seatId));
 }
 
