@@ -182,7 +182,14 @@ body {
 }
 
 
+.seat.unavailable.inspected {
+  opacity: 0.85;
+}
 
+.legend-swatch.inspected {
+  background: #ffffff;
+  border: 2px solid #1f2937;
+}
 
 
 

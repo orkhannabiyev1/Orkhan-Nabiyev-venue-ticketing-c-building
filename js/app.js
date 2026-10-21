@@ -105,6 +105,8 @@ function renderLegend() {
     );
   });
   addLegendItem("Unavailable", null, "unavailable");
+  addLegendItem("Inspected", null, "inspected");
+  
 }
 
 renderStage();
