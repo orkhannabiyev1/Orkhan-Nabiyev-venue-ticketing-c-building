@@ -228,3 +228,12 @@ document.getElementById("zoom-in").addEventListener("click", function () {
 document.getElementById("zoom-out").addEventListener("click", function () {
   setScale(view.scale - ZOOM_STEP);
 });
+
+function resetView() {
+  view.scale = DEFAULT_VIEW.scale;
+  view.x = DEFAULT_VIEW.x;
+  view.y = DEFAULT_VIEW.y;
+  applyView();
+}
+
+document.getElementById("reset-view").addEventListener("click", resetView);
