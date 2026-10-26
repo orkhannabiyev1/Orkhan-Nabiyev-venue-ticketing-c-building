@@ -194,16 +194,35 @@ mapContent.addEventListener("click", function (event) {
   inspectSeat(button.dataset.seatId);
 });
 
-
+const MAP_WIDTH = 1300;
+const MAP_HEIGHT = 600;
+const MOVE_STEP = 60;
+const KEEP_VISIBLE = 150;
 const DEFAULT_VIEW = { scale: 0.7, x: 0, y: 0 };
 const view = { ...DEFAULT_VIEW };
 
+const mapViewport = document.getElementById("map-viewport");
+
+function clampView() {
+  const viewportWidth = mapViewport.clientWidth;
+  const viewportHeight = mapViewport.clientHeight;
+  const scaledWidth = MAP_WIDTH * view.scale;
+  const scaledHeight = MAP_HEIGHT * view.scale;
+
+  const minX = KEEP_VISIBLE - scaledWidth;
+  const maxX = viewportWidth - KEEP_VISIBLE;
+  const minY = KEEP_VISIBLE - scaledHeight;
+  const maxY = viewportHeight - KEEP_VISIBLE;
+
+  view.x = Math.min(maxX, Math.max(minX, view.x));
+  view.y = Math.min(maxY, Math.max(minY, view.y));
+}
+
 function applyView() {
+  clampView();
   mapContent.style.transform =
     "translate(" + view.x + "px, " + view.y + "px) scale(" + view.scale + ")";
 }
-
-applyView();
 
 
 const MIN_SCALE = 0.4;
@@ -237,3 +256,26 @@ function resetView() {
 }
 
 document.getElementById("reset-view").addEventListener("click", resetView);
+
+
+
+
+
+function moveView(dx, dy) {
+  view.x += dx;
+  view.y += dy;
+  applyView();
+}
+
+document.getElementById("move-up").addEventListener("click", function () {
+  moveView(0, -MOVE_STEP);
+});
+document.getElementById("move-down").addEventListener("click", function () {
+  moveView(0, MOVE_STEP);
+});
+document.getElementById("move-left").addEventListener("click", function () {
+  moveView(-MOVE_STEP, 0);
+});
+document.getElementById("move-right").addEventListener("click", function () {
+  moveView(MOVE_STEP, 0);
+});
