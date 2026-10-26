@@ -279,3 +279,65 @@ document.getElementById("move-left").addEventListener("click", function () {
 document.getElementById("move-right").addEventListener("click", function () {
   moveView(MOVE_STEP, 0);
 });
+
+
+const cart = [];
+
+const addToCartButton = document.getElementById("add-to-cart");
+const cartEmpty = document.getElementById("cart-empty");
+const cartList = document.getElementById("cart-list");
+const cartTotal = document.getElementById("cart-total");
+
+function updateAddButton() {
+  const seat = findSeat(inspectedSeatId);
+  if (!seat) {
+    addToCartButton.disabled = true;
+    addToCartButton.textContent = "Add to cart";
+  } else if (seat.status === "unavailable") {
+    addToCartButton.disabled = true;
+    addToCartButton.textContent = "Unavailable";
+  } else if (cart.includes(seat.id)) {
+    addToCartButton.disabled = true;
+    addToCartButton.textContent = "Already in cart";
+  } else {
+    addToCartButton.disabled = false;
+    addToCartButton.textContent = "Add to cart";
+  }
+}
+
+function renderCart() {
+  cartList.innerHTML = "";
+  let total = 0;
+
+  cart.forEach(function (seatId) {
+    const seat = findSeat(seatId);
+    const item = document.createElement("li");
+    item.textContent =
+      "Row " + seat.row + ", seat " + seat.number + " - " +
+      seat.price + " " + VENUE.currency;
+    cartList.appendChild(item);
+    total += seat.price;
+  });
+
+  cartTotal.textContent = total + " " + VENUE.currency;
+  cartEmpty.hidden = cart.length > 0;
+}
+
+function addToCart(seatId) {
+  const seat = findSeat(seatId);
+  if (!seat) return;
+  if (seat.status === "unavailable") return;
+  if (cart.includes(seatId)) return;
+
+  cart.push(seatId);
+  renderCart();
+  updateAddButton();
+}
+
+addToCartButton.addEventListener("click", function () {
+  addToCart(inspectedSeatId);
+});
+
+mapContent.addEventListener("click", updateAddButton);
+
+renderCart();
