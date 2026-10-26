@@ -204,3 +204,27 @@ function applyView() {
 }
 
 applyView();
+
+
+const MIN_SCALE = 0.4;
+const MAX_SCALE = 2;
+const ZOOM_STEP = 0.1;
+
+function setScale(newScale) {
+  if (newScale < MIN_SCALE) {
+    newScale = MIN_SCALE;
+  }
+  if (newScale > MAX_SCALE) {
+    newScale = MAX_SCALE;
+  }
+  view.scale = Math.round(newScale * 100) / 100;
+  applyView();
+}
+
+document.getElementById("zoom-in").addEventListener("click", function () {
+  setScale(view.scale + ZOOM_STEP);
+});
+
+document.getElementById("zoom-out").addEventListener("click", function () {
+  setScale(view.scale - ZOOM_STEP);
+});
