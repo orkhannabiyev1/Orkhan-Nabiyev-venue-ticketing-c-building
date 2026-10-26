@@ -171,6 +171,7 @@ function showSeatDetails(seat) {
   seatInfoEmpty.hidden = true;
   seatInfo.hidden = false;
 }
+
 function inspectSeat(seatId) {
   if (inspectedSeatId) {
     const previous = getSeatButton(inspectedSeatId);
@@ -192,3 +193,14 @@ mapContent.addEventListener("click", function (event) {
   }
   inspectSeat(button.dataset.seatId);
 });
+
+
+const DEFAULT_VIEW = { scale: 0.7, x: 0, y: 0 };
+const view = { ...DEFAULT_VIEW };
+
+function applyView() {
+  mapContent.style.transform =
+    "translate(" + view.x + "px, " + view.y + "px) scale(" + view.scale + ")";
+}
+
+applyView();
