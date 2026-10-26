@@ -319,7 +319,7 @@ function renderCart() {
     total += seat.price;
   });
 
-  cartTotal.textContent = total + " " + VENUE.currency;
+  cartTotal.textContent = total;
   cartEmpty.hidden = cart.length > 0;
 }
 
