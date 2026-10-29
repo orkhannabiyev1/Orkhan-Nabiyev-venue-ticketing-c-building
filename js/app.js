@@ -316,9 +316,20 @@ function renderCart() {
   cart.forEach(function (seatId) {
     const seat = findSeat(seatId);
     const item = document.createElement("li");
-    item.textContent =
+
+    const label = document.createElement("span");
+    label.textContent =
       "Row " + seat.row + ", seat " + seat.number + " - " +
-      seat.price + " " + VENUE.currency;
+      seat.price + " " + VENUE.currency + " ";
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.textContent = "Remove";
+    removeButton.dataset.seatId = seatId;
+    removeButton.setAttribute("aria-label", "Remove seat " + seatId + " from cart");
+
+    item.appendChild(label);
+    item.appendChild(removeButton);
     cartList.appendChild(item);
     total += seat.price;
   });
@@ -326,6 +337,25 @@ function renderCart() {
   cartTotal.textContent = total;
   cartEmpty.hidden = cart.length > 0;
 }
+
+function removeFromCart(seatId) {
+  const index = cart.indexOf(seatId);
+  if (index === -1) return;
+
+  cart.splice(index, 1);
+  renderCart();
+  refreshSeat(seatId);
+  if (inspectedSeatId === seatId) {
+    showSeatDetails(findSeat(seatId));
+  }
+  updateAddButton();
+}
+
+cartList.addEventListener("click", function (event) {
+  const button = event.target.closest("button[data-seat-id]");
+  if (!button) return;
+  removeFromCart(button.dataset.seatId);
+});
 
 function refreshSeat(seatId) {
   const seat = findSeat(seatId);
