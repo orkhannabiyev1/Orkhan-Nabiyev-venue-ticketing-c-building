@@ -104,9 +104,10 @@ function renderLegend() {
       category.color
     );
   });
+
   addLegendItem("Unavailable", null, "unavailable");
   addLegendItem("Inspected", null, "inspected");
-  
+  addLegendItem("In cart", null, "in-cart");
 }
 
 renderStage();
@@ -166,8 +167,11 @@ function showSeatDetails(seat) {
   document.getElementById("info-number").textContent = seat.number;
   document.getElementById("info-price").textContent = seat.price + " " + VENUE.currency;
   document.getElementById("info-status").textContent =
-    seat.status === "unavailable" ? "Unavailable" : "Available";
+  seat.status === "unavailable" ? "Unavailable" : "Available";
 
+  if (cart.includes(seat.id)) {
+    document.getElementById("info-status").textContent = "In cart";
+  }
   seatInfoEmpty.hidden = true;
   seatInfo.hidden = false;
 }
@@ -312,15 +316,59 @@ function renderCart() {
   cart.forEach(function (seatId) {
     const seat = findSeat(seatId);
     const item = document.createElement("li");
-    item.textContent =
+
+    const label = document.createElement("span");
+    label.textContent =
       "Row " + seat.row + ", seat " + seat.number + " - " +
-      seat.price + " " + VENUE.currency;
+      seat.price + " " + VENUE.currency + " ";
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.textContent = "Remove";
+    removeButton.dataset.seatId = seatId;
+    removeButton.setAttribute("aria-label", "Remove seat " + seatId + " from cart");
+
+    item.appendChild(label);
+    item.appendChild(removeButton);
     cartList.appendChild(item);
     total += seat.price;
   });
 
   cartTotal.textContent = total;
   cartEmpty.hidden = cart.length > 0;
+}
+
+function removeFromCart(seatId) {
+  const index = cart.indexOf(seatId);
+  if (index === -1) return;
+
+  cart.splice(index, 1);
+  renderCart();
+  refreshSeat(seatId);
+  if (inspectedSeatId === seatId) {
+    showSeatDetails(findSeat(seatId));
+  }
+  updateAddButton();
+}
+
+cartList.addEventListener("click", function (event) {
+  const button = event.target.closest("button[data-seat-id]");
+  if (!button) return;
+  removeFromCart(button.dataset.seatId);
+});
+
+function refreshSeat(seatId) {
+  const seat = findSeat(seatId);
+  const button = getSeatButton(seatId);
+  const inCart = cart.includes(seatId);
+
+  button.classList.toggle("in-cart", inCart);
+  button.setAttribute(
+    "aria-label",
+    "Row " + seat.row + ", seat " + seat.number + ", " + seat.zoneLabel +
+    ", " + seat.price + " " + VENUE.currency + ", " +
+    (inCart ? "in cart" : seat.status)
+  );
 }
 
 function addToCart(seatId) {
@@ -331,6 +379,8 @@ function addToCart(seatId) {
 
   cart.push(seatId);
   renderCart();
+  refreshSeat(seatId);
+  showSeatDetails(seat);
   updateAddButton();
 }
 
