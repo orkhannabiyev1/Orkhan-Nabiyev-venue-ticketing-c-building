@@ -288,7 +288,31 @@ document.getElementById("move-right").addEventListener("click", function () {
   moveView(MOVE_STEP, 0);
 });
 
+function zoomAt(newScale, px, py) {
+  const mapX = (px - view.x) / view.scale;
+  const mapY = (py - view.y) / view.scale;
 
+  setScale(newScale);
+
+  view.x = px - mapX * view.scale;
+  view.y = py - mapY * view.scale;
+  applyView();
+}
+
+mapViewport.addEventListener(
+  "wheel",
+  function (event) {
+    event.preventDefault();
+    const rect = mapViewport.getBoundingClientRect();
+    const direction = event.deltaY < 0 ? 1 : -1;
+    zoomAt(
+      view.scale + direction * ZOOM_STEP,
+      event.clientX - rect.left,
+      event.clientY - rect.top
+    );
+  },
+  { passive: false }
+);
 
 view.scale = getDefaultScale();
 applyView();
