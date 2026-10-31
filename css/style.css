@@ -260,3 +260,27 @@ body {
   background: #888;
   box-shadow: 0 0 0 2px #fff, 0 0 0 3px #222;
 }
+
+
+
+
+.map-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 600px) {
+  .map-controls button {
+    flex: 1 1 calc(50% - 8px);
+    min-height: 44px;
+  }
+
+  .map-viewport {
+    height: 320px;
+  }
+
+  .legend {
+    flex-wrap: wrap;
+  }
+}
