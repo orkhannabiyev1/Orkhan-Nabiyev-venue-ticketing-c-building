@@ -343,6 +343,7 @@ function removeFromCart(seatId) {
   if (index === -1) return;
 
   cart.splice(index, 1);
+  saveCart();
   renderCart();
   refreshSeat(seatId);
   if (inspectedSeatId === seatId) {
@@ -378,6 +379,7 @@ function addToCart(seatId) {
   if (cart.includes(seatId)) return;
 
   cart.push(seatId);
+  saveCart();
   renderCart();
   refreshSeat(seatId);
   showSeatDetails(seat);
@@ -390,4 +392,59 @@ addToCartButton.addEventListener("click", function () {
 
 mapContent.addEventListener("click", updateAddButton);
 
+
+const STORAGE_KEY = "cBuildingAuditoriumCart";
+
+function saveCart() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+  } catch (error) {
+    console.warn("Could not save the cart", error);
+  }
+}
+
+function loadCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!Array.isArray(saved)) return;
+
+    saved.forEach(function (seatId) {
+      const seat = findSeat(seatId);
+      if (seat && seat.status !== "unavailable" && !cart.includes(seatId)) {
+        cart.push(seatId);
+        refreshSeat(seatId);
+      }
+    });
+  } catch (error) {
+    console.warn("Could not read the saved cart", error);
+  }
+}
+
+loadCart();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 renderCart();
+
+
