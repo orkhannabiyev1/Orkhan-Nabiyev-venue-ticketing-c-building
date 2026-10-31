@@ -206,6 +206,10 @@ const DEFAULT_VIEW = { scale: 0.7, x: 0, y: 0 };
 const view = { ...DEFAULT_VIEW };
 
 const mapViewport = document.getElementById("map-viewport");
+function getDefaultScale() {
+  const fit = mapViewport.clientWidth / MAP_WIDTH;
+  return Math.max(MIN_SCALE, Math.min(0.7, Math.round(fit * 100) / 100));
+}
 
 function clampView() {
   const viewportWidth = mapViewport.clientWidth;
@@ -253,7 +257,7 @@ document.getElementById("zoom-out").addEventListener("click", function () {
 });
 
 function resetView() {
-  view.scale = DEFAULT_VIEW.scale;
+  view.scale = getDefaultScale();
   view.x = DEFAULT_VIEW.x;
   view.y = DEFAULT_VIEW.y;
   applyView();
@@ -283,6 +287,11 @@ document.getElementById("move-left").addEventListener("click", function () {
 document.getElementById("move-right").addEventListener("click", function () {
   moveView(MOVE_STEP, 0);
 });
+
+
+
+view.scale = getDefaultScale();
+applyView();
 
 
 const cart = [];
