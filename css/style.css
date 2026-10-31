@@ -284,3 +284,15 @@ body {
     flex-wrap: wrap;
   }
 }
+
+
+
+.map-viewport {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.map-viewport.dragging {
+  cursor: grabbing;
+}

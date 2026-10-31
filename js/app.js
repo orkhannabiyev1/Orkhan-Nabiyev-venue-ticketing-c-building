@@ -314,6 +314,47 @@ mapViewport.addEventListener(
   { passive: false }
 );
 
+const DRAG_THRESHOLD = 5;
+let drag = null;
+
+mapViewport.addEventListener("pointerdown", function (event) {
+  if (event.button !== 0) return;
+  drag = {
+    pointerId: event.pointerId,
+    startX: event.clientX,
+    startY: event.clientY,
+    viewX: view.x,
+    viewY: view.y,
+    moved: false
+  };
+});
+
+mapViewport.addEventListener("pointermove", function (event) {
+  if (!drag || event.pointerId !== drag.pointerId) return;
+
+  const dx = event.clientX - drag.startX;
+  const dy = event.clientY - drag.startY;
+
+  if (!drag.moved) {
+    if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+    drag.moved = true;
+    mapViewport.setPointerCapture(event.pointerId);
+    mapViewport.classList.add("dragging");
+  }
+
+  view.x = drag.viewX + dx;
+  view.y = drag.viewY + dy;
+  applyView();
+});
+
+function endDrag() {
+  drag = null;
+  mapViewport.classList.remove("dragging");
+}
+
+mapViewport.addEventListener("pointerup", endDrag);
+mapViewport.addEventListener("pointercancel", endDrag);
+
 view.scale = getDefaultScale();
 applyView();
 
