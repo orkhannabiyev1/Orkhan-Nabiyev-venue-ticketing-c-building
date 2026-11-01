@@ -1,62 +1,65 @@
-Orkhan-Nabiyev-venue-ticketing-c-building
+# Interactive Venue Ticketing System: C Building Auditorium
 
-A front-end web application for seat selection, designed for the large auditorium in the university's Building C. Visitors can view an interactive seating map, check the details and pricing for individual seats, and select their tickets. The project is built using only pure HTML, CSS, and JavaScript—without any frameworks, back-end systems, or specialized build processes.
+A front-end web application for seat selection, designed for the large auditorium in Building C at ADA University. Visitors can view an interactive seating map, inspect the details and price of individual seats, and (soon) add tickets to a cart. The project is built with plain HTML, CSS and JavaScript, with no frameworks, back end or build tools.
 
-Status
-In progress. The construction of the seating map, dynamic generation, and the display of seat details are complete; work is ongoing regarding map navigation, the shopping cart functionality, and data persistence.
+## Status
 
-Venue
+In progress. The seat map, dynamic seat generation and the seat details panel are done. Map navigation, the shopping cart and data persistence are still being built.
 
-The venue is designed based on the large auditorium in Building C at ADA University.
+## Venue
 
-![alt text](image.png)
+The venue is modelled on the large auditorium in Building C at ADA University.
+
+![Zones and prices of the C Building Auditorium](assets/venue-map.png)
+
+| Zone | Rows | Price |
+|------|------|-------|
+| Premium | A–C | 25 ₼ |
+| Standard | D–H | 15 ₼ |
+| Balcony | I–J | 10 ₼ |
 
 Total: 256 seats, of which 21 are unavailable (already sold).
 
+## Implemented features
 
-Implemented Features
+- The venue map is generated from JavaScript data. Seats are not hard-coded in the HTML.
+- Curved rows arranged in blocks, with aisles that line up in straight lines.
+- A stage and row labels at both ends of each row.
+- A colour legend based on price categories.
+- Every seat is a real `<button>`, so the map works with both mouse and keyboard.
+- Clicking a seat only inspects it: the panel shows its ID, zone, row, number, price and status.
+- Seat states: available, inspected and unavailable (in cart is coming with the cart).
+- Accessibility: each seat has a descriptive `aria-label`, and the inspected seat has `aria-current`.
 
-- The venue map is generated dynamically, entirely based on JavaScript data; seats are not hard-coded in HTML (they are auto-generated).
-- Curved rows arranged in three blocks, with aisles running in straight lines. - The stage and row labels at both ends of each row are present
-- A color legend based on price categories
-- Each seat is an actual `<button>` element, allowing the map to be navigated using both a mouse and a keyboard
-- Seat information: clicking a seat displays its ID, zone, row, number, price, and status
-- Seat statuses: empty (available), selected (being viewed), and occupied (unavailable)
-- Accessibility: each seat includes a descriptive `aria-label`, while selected seats feature an `aria-current` attribute
+## Under development
 
+- Zoom in/out, four-direction movement and Reset / Center view.
+- Cart: add to cart, remove, no duplicate seats, total price.
+- Saving the cart in `localStorage` and restoring seat states after a reload.
+- Fully responsive layout.
+- Bonus: mouse wheel zoom and click-and-drag panning.
 
-Under Development
+## Getting started
 
-- Zooming, panning (four-way movement), and "Reset" / "Center" functions
-- "Shopping Cart" functionality: adding items, removing items, preventing duplicate seat selection, and calculating the total price
-- Storing the cart in `localStorage` and restoring seat statuses after a page refresh
-- Fully responsive design
-- Zooming via mouse wheel and panning via drag-and-drop (additional feature)
+No installation is needed. Clone the repository and open `index.html` in a modern browser, or serve the folder with a local server such as the VS Code "Live Server" extension.
 
-Getting Started
-
-No installation is required. Clone the repository and open the `index.html` file in a modern browser. Alternatively, you can run the folder via a local server, such as the "Live Server" extension for VS Code.
-
-
+```bash
 git clone https://github.com/orkhannabiyev1/Orkhan-Nabiyev-venue-ticketing-c-building.git
+```
 
+## Project structure
 
+| File | Purpose |
+|------|---------|
+| `index.html` | Page structure: map area, seat details, cart |
+| `css/style.css` | Layout, seat states, legend, stage |
+| `js/venue-data.js` | Venue model: zones, rows, prices, unavailable seats |
+| `js/app.js` | Seat generation, rendering and interaction |
 
-Project Structure
+## How it works
 
-index.html page structure: map area, seat details, cart
-css/style.css design, seat statuses, color legend, stage
-js/venue-data.js venue model: zones, rows, prices, occupied seats
-js/app.js seat generation, visualization, and interaction
+**Data model.** The `VENUE` object lives in `js/venue-data.js`. Price categories (label, price, colour) are defined once and zones refer to them by name, so a price change updates the map, the legend and the seat details. Each zone defines its rows by radius, seats per block (for example `[6, 12, 8]`), angle step and aisle gap. Unavailable seats are stored as a list of seat IDs such as `"A-8"`.
 
+**Seat generation.** Rows are arcs around a common centre point. `getSeatPosition` uses `Math.sin` and `Math.cos` to turn a radius and an angle into `x` and `y` coordinates. `buildSeats` loops over zones, rows, blocks and seats and creates one object per seat with its ID, price, colour, position and status. `renderSeats` then creates a `<button>` for each seat. Seats in the same column of different rows share the same angle, which keeps the aisles straight.
 
-How it works
-
-Data model.
- The `VENUE` object is defined in the `js/venue-data.js` file. Price categories (name, price, color) are defined once; zones refer to these categories by their names. As a result, any changes to the price are automatically reflected in the map, color key, and seat details. Each zone contains its own rows; these rows are defined by parameters such as radius, number of seats per block (e.g., `[6, 12, 8]`), angle between seats, and transition spaces. Non-existent seats are stored as a list of seat identifiers (IDs), such as "A-8".
-
-Seat Creation.
- Rows are arcs around a common center point. The `getSeatPosition` function uses the `Math.sin` and `Math.cos` methods to convert radius and angle values ​​to `x` and `y` coordinates. The `buildSeats` function iterates over zones, rows, blocks, and seats, creating a separate object for each; these objects contain the seat ID, price, color, position, and status. The `renderSeats` function then creates a `<button>` element for each seat. Seats in the same column in different rows have the same angle value, which ensures that the transitions between zones are aligned in a straight line.
-
-Interactivity.
- A single click event listener added to the map container uses event delegation to detect the seat that was clicked, mark it as "selected", and display it in the ``Seat Details'' panel.
+**Interaction.** One click listener on the map container uses event delegation to find the clicked seat, mark it as inspected and show it in the seat details panel.
