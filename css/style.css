@@ -310,3 +310,9 @@ body {
 #add-to-cart {
   margin-top: 12px;
 }
+
+
+.seat:focus-visible {
+  outline: 3px solid #222;
+  outline-offset: 2px;
+}
