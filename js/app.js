@@ -202,13 +202,48 @@ const MAP_WIDTH = 1300;
 const MAP_HEIGHT = 600;
 const MOVE_STEP = 60;
 const KEEP_VISIBLE = 150;
-const DEFAULT_VIEW = { scale: 0.7, x: 0, y: 0 };
-const view = { ...DEFAULT_VIEW };
+
+const view = { scale: 0.7, x: 0, y: 0 };
 
 const mapViewport = document.getElementById("map-viewport");
-function getDefaultScale() {
-  const fit = mapViewport.clientWidth / MAP_WIDTH;
-  return Math.max(MIN_SCALE, Math.min(0.7, Math.round(fit * 100) / 100));
+function getMapBounds() {
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+
+  SEATS.forEach(function (seat) {
+    minX = Math.min(minX, seat.x);
+    maxX = Math.max(maxX, seat.x);
+    minY = Math.min(minY, seat.y);
+    maxY = Math.max(maxY, seat.y);
+  });
+
+  const padding = 40;
+  return {
+    minX: minX - padding,
+    maxX: maxX + padding,
+    minY: minY - padding,
+    maxY: maxY + padding
+  };
+}
+
+function getDefaultView() {
+  const bounds = getMapBounds();
+  const boundsWidth = bounds.maxX - bounds.minX;
+  const boundsHeight = bounds.maxY - bounds.minY;
+
+  const fit = Math.min(
+    mapViewport.clientWidth / boundsWidth,
+    mapViewport.clientHeight / boundsHeight
+  );
+  const scale = Math.max(MIN_SCALE, Math.min(1, Math.round(fit * 100) / 100));
+
+  return {
+    scale: scale,
+    x: (mapViewport.clientWidth - boundsWidth * scale) / 2 - bounds.minX * scale,
+    y: (mapViewport.clientHeight - boundsHeight * scale) / 2 - bounds.minY * scale
+  };
 }
 
 function clampView() {
@@ -257,9 +292,10 @@ document.getElementById("zoom-out").addEventListener("click", function () {
 });
 
 function resetView() {
-  view.scale = getDefaultScale();
-  view.x = DEFAULT_VIEW.x;
-  view.y = DEFAULT_VIEW.y;
+  const start = getDefaultView();
+  view.scale = start.scale;
+  view.x = start.x;
+  view.y = start.y;
   applyView();
 }
 
@@ -355,8 +391,7 @@ function endDrag() {
 mapViewport.addEventListener("pointerup", endDrag);
 mapViewport.addEventListener("pointercancel", endDrag);
 
-view.scale = getDefaultScale();
-applyView();
+resetView();
 
 
 const cart = [];
@@ -495,28 +530,6 @@ function loadCart() {
 }
 
 loadCart();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 renderCart();
