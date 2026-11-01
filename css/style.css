@@ -306,3 +306,7 @@ body {
 .map-viewport.dragging {
   cursor: grabbing;
 }
+
+#add-to-cart {
+  margin-top: 12px;
+}
