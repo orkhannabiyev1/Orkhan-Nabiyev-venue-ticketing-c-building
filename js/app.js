@@ -299,6 +299,16 @@ function resetView() {
   applyView();
 }
 
+
+let lastViewportWidth = mapViewport.clientWidth;
+
+window.addEventListener("resize", function () {
+  if (mapViewport.clientWidth !== lastViewportWidth) {
+    lastViewportWidth = mapViewport.clientWidth;
+    resetView();
+  }
+});
+
 document.getElementById("reset-view").addEventListener("click", resetView);
 
 
